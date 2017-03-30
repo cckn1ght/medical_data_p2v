@@ -1,6 +1,7 @@
 import json
 from pprs import string2words
 from collections import Counter
+from Annotation import Annotation
 
 
 def load_shared_task(yes_only=False, raw=True):
@@ -9,9 +10,10 @@ def load_shared_task(yes_only=False, raw=True):
         for line in f:
             line = line.split()
             tweet_id_tag[line[0]] = line[2]
-    ids = []
-    sentences = []
-    tags = []
+    # ids = []
+    # sentences = []
+    # tags = []
+    annotations = []
     with open('./sharedTask/tweets.json', 'r') as f:
         for line in f:
             tweet = json.loads(line)
@@ -21,11 +23,12 @@ def load_shared_task(yes_only=False, raw=True):
                 tweet_text = string2words(tweet_text, remove_stopwords=False)
             tweet_tag = int(tweet_id_tag[tweet_id])
             if (yes_only and tweet_tag) or not yes_only:
-                ids.append(tweet_id)
-                sentences.append(tweet_text)
-                tags.append(tweet_tag)
-    print(Counter(tags))
-    if not yes_only:
-        print('Original No to Yes ratio: {}'.format(
-            Counter(tags)[0] / Counter(tags)[1]))
-    return ids, sentences, tags
+                # ids.append(tweet_id)
+                # sentences.append(tweet_text)
+                # tags.append(tweet_tag)
+                annotations.append(Annotation(tweet_id, tweet_text, tweet_tag))
+    print(Counter(t.tag for t in annotations))
+    # if not yes_only:
+    #     print('Original No to Yes ratio: {}'.format(
+    #         Counter(tags)[0] / Counter(tags)[1]))
+    return annotations

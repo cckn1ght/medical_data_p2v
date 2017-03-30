@@ -40,13 +40,12 @@ def main():
     for tid, raw_sent, tag, phrase_sent in zip(ids, raw_sentences, tags, phrase_sentences):
         word_sim_pair = [(w, *sim_dict[w][-1])
                          for w in phrase_sent if sim_dict[w]]
-        sim_lambda = lambda a: a[-1]
         max_sim = 0
         min_sim = 0
         average_sim = 0
         if word_sim_pair:
-            max_sim = max(word_sim_pair, key=sim_lambda)[-1]
-            min_sim = min(word_sim_pair, key=sim_lambda)[-1]
+            max_sim = max(word_sim_pair, key=lambda a: a[-1])[-1]
+            min_sim = min(word_sim_pair, key=lambda a: a[-1])[-1]
             average_sim = sum(
                 [sim for a, b, sim in word_sim_pair]) / len(word_sim_pair)
         tweet_detail.append([tid, raw_sent, tag, max_sim,

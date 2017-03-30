@@ -102,15 +102,16 @@ def sim_transpose(se_sim_dict):
 
 
 def main():
-    model = Word2Vec.load('./cleaned_data/p2vModel')
-    buildIndication = False
+    # model = Word2Vec.load('./cleaned_data/p2vModel')
+    model = Word2Vec.load('./cleaned_data/p2vModel_skipG_withSharedTask')
+    buildIndication = True
     super_se_dict = build_set(buildIndication)
     sum([len(se_set) for se_set in super_se_dict.values()])
     wirte2file(super_se_dict, buildIndication)
     se_in_vocab = build_sub_w2v_model(super_se_dict, model)
     se_sim_dict = top_n_of_se(se_in_vocab, model)
     se_sim_transpose = sim_transpose(se_sim_dict)
-    with open('./cleaned_data/sim_transpose.json', 'w') as f:
+    with open('./cleaned_data/sim_transpose_skipG.json', 'w') as f:
         json.dump(se_sim_transpose, f, indent=2)
 
 
